@@ -101,15 +101,15 @@ export default function MovieList() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="relative group"
+          className="relative group p-1"
         >
           {/* Scrollable Content */}
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto pb-8 -mx-4 px-4 scrollbar-hide space-x-4 sm:space-x-6 scroll-smooth"
+            className="flex gap-2 px-2 py-2 overflow-x-auto scrollbar-hide scroll-smooth"
             style={{
               scrollSnapType: 'x mandatory',
-              scrollPadding: '0 16px'
+              // scrollPadding: '0 16px'
             }}
           >
             {movies.map((movie) => (
@@ -120,7 +120,6 @@ export default function MovieList() {
                 transition={{ duration: 0.3 }}
                 className="flex-none"
                 style={{
-                  width: 'calc(50vw - 32px)',
                   minWidth: '160px',
                   maxWidth: '280px',
                   scrollSnapAlign: 'start'
@@ -132,8 +131,8 @@ export default function MovieList() {
           </div>
 
           {/* Gradient Fades */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-neutral-950 to-transparent pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-neutral-950 to-transparent pointer-events-none" />
+          {/* <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-neutral-950 to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-neutral-950 to-transparent pointer-events-none" /> */}
 
           {/* Navigation Arrows */}
           {showLeftArrow && (
@@ -142,7 +141,7 @@ export default function MovieList() {
               animate={{ opacity: 1 }}
               whileHover={{ scale: 1.1 }}
               onClick={() => scroll(-400)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 flex items-center justify-center shadow-lg transition-all"
+              className="absolute left-0 top-[45%] -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 flex items-center justify-center shadow-lg transition-all"
             >
               <ChevronLeftIcon className="h-6 w-6 text-white" />
             </motion.button>
@@ -154,7 +153,7 @@ export default function MovieList() {
               animate={{ opacity: 1 }}
               whileHover={{ scale: 1.1 }}
               onClick={() => scroll(400)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 flex items-center justify-center shadow-lg transition-all"
+              className="absolute right-0 sm:right-1 top-[45%] -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 flex items-center justify-center shadow-lg transition-all"
             >
               <ChevronRightIcon className="h-6 w-6 text-white" />
             </motion.button>
