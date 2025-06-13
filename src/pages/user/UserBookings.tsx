@@ -36,9 +36,9 @@ export default function UserBookings() {
 
           if (movieSnap.exists()) {
             bookingsData.push({
-              ...bookingData,               // spread first
-              id: docItem.id,               // then id, so it overwrites any id in bookingData
-              movie: { id: movieSnap.id, ...movieSnap.data() } as Movie
+              ...bookingData,
+              id: docItem.id,
+              movie: { id: movieSnap.id, ...movieSnap.data() } as Movie,
             })
           }
         }
@@ -65,8 +65,8 @@ export default function UserBookings() {
       const seats = Array.isArray(b.seats)
         ? b.seats.join(', ')
         : typeof b.seats === 'string'
-          ? b.seats
-          : ''
+        ? b.seats
+        : ''
 
       return [
         b.movie.title,
@@ -74,7 +74,7 @@ export default function UserBookings() {
         b.time,
         seats,
         `$${b.totalPrice.toFixed(2)}`,
-        b.status.toUpperCase()
+        b.status.toUpperCase(),
       ]
     })
 
@@ -85,11 +85,11 @@ export default function UserBookings() {
       theme: 'grid',
       headStyles: {
         fillColor: [239, 68, 68],
-        textColor: [255, 255, 255]
+        textColor: [255, 255, 255],
       },
       styles: {
-        fontSize: 10
-      }
+        fontSize: 10,
+      },
     })
 
     doc.save('bookings.pdf')
@@ -150,118 +150,130 @@ export default function UserBookings() {
             </div>
           </motion.div>
         ) : (
+          // --- Optimized Ticket Carousel Starts ---
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="overflow-x-auto no-scrollbar -mx-4 px-4 py-6 flex space-x-6 snap-x snap-mandatory"
+            className="overflow-x-auto no-scrollbar px-1 sm:px-4 py-6"
           >
-            {bookings.map((booking) => {
-              const dateObj = booking.date instanceof Timestamp ? booking.date.toDate() : new Date(booking.date)
-              const formattedDate = format(dateObj, 'EEEE, MMMM d, yyyy')
-              const formattedTime = booking.time
+            <div
+              className="flex gap-4 sm:gap-6 md:gap-8 snap-x snap-mandatory scroll-smooth"
+              style={{ paddingBottom: '8px', minWidth: 'max-content' }}
+            >
+              {bookings.map((booking) => {
+                const dateObj =
+                  booking.date instanceof Timestamp
+                    ? booking.date.toDate()
+                    : new Date(booking.date)
+                const formattedDate = format(dateObj, 'EEEE, MMMM d, yyyy')
+                const formattedTime = booking.time
 
-              const seatCount =
-                typeof booking.seats === 'string'
-                  ? booking.seats.split(',').length
-                  : Array.isArray(booking.seats)
+                const seatCount =
+                  typeof booking.seats === 'string'
+                    ? booking.seats.split(',').length
+                    : Array.isArray(booking.seats)
                     ? booking.seats.length
                     : 0
 
-              return (
-                <div
-                  key={booking.id}
-                  className="snap-start flex-shrink-0 w-[92vw] max-w-xs sm:max-w-sm md:max-w-md bg-gradient-to-br from-yellow-600 via-orange-500 to-pink-700 rounded-3xl shadow-xl relative text-white font-sans"
-                  style={{ minHeight: '280px' }}
-                >
-                  {/* Left Poster */}
-                  <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-36 rounded-l-3xl overflow-hidden shadow-lg border-r border-yellow-800">
-                    <img
-                      src={booking.movie.posterUrl}
-                      alt={booking.movie.title}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-
-                  {/* Ticket perforation */}
+                return (
                   <div
-                    aria-hidden="true"
-                    className="absolute top-1/2 -left-5 w-10 h-10 bg-gray-900 rounded-full border-4 border-pink-600 shadow-md"
-                    style={{ transform: 'translateY(-50%)' }}
-                  ></div>
-                  <div
-                    aria-hidden="true"
-                    className="absolute top-1/2 -right-5 w-10 h-10 bg-gray-900 rounded-full border-4 border-pink-600 shadow-md"
-                    style={{ transform: 'translateY(-50%)' }}
-                  ></div>
-
-                  {/* Right Content */}
-                  <div className="ml-28 sm:ml-36 p-4 sm:p-6 flex flex-col h-full justify-between">
-                    <h3 className="text-base sm:text-lg md:text-xl font-bold tracking-tight mb-1 line-clamp-2">
-                      {booking.movie.title}
-                    </h3>
-
-                    <div className="text-xs sm:text-sm text-pink-200 mb-3">
-                      <div>{formattedDate}</div>
-                      <div>{formattedTime}</div>
+                    key={booking.id}
+                    className="snap-start flex-shrink-0 w-[90vw] sm:w-[340px] md:w-[380px] lg:w-[400px] bg-gradient-to-br from-yellow-600 via-orange-500 to-pink-700 rounded-3xl shadow-xl relative text-white font-sans"
+                    style={{ minHeight: '280px' }}
+                  >
+                    {/* Left Poster */}
+                    <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-36 rounded-l-3xl overflow-hidden shadow-lg border-r border-yellow-800">
+                      <img
+                        src={booking.movie.posterUrl}
+                        alt={booking.movie.title}
+                        className="h-full w-full object-cover"
+                      />
                     </div>
 
-                    <div className="mb-4">
-                      <h4 className="text-[10px] sm:text-xs uppercase tracking-widest text-neutral-100 mb-1">
-                        Seats
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {(Array.isArray(booking.seats)
-                          ? booking.seats
-                          : typeof booking.seats === 'string'
+                    {/* Ticket Perforation Circles */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute top-1/2 -left-5 w-10 h-10 bg-gray-900 rounded-full border-4 border-pink-600 shadow-md"
+                      style={{ transform: 'translateY(-50%)' }}
+                    ></div>
+                    <div
+                      aria-hidden="true"
+                      className="absolute top-1/2 -right-5 w-10 h-10 bg-gray-900 rounded-full border-4 border-pink-600 shadow-md"
+                      style={{ transform: 'translateY(-50%)' }}
+                    ></div>
+
+                    {/* Right Content */}
+                    <div className="ml-28 sm:ml-36 p-4 sm:p-6 flex flex-col h-full justify-between">
+                      <h3 className="text-base sm:text-lg md:text-xl font-bold tracking-tight mb-1 line-clamp-2">
+                        {booking.movie.title}
+                      </h3>
+
+                      <div className="text-xs sm:text-sm text-pink-200 mb-3">
+                        <div>{formattedDate}</div>
+                        <div>{formattedTime}</div>
+                      </div>
+
+                      <div className="mb-4">
+                        <h4 className="text-[10px] sm:text-xs uppercase tracking-widest text-neutral-100 mb-1">
+                          Seats
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {(Array.isArray(booking.seats)
+                            ? booking.seats
+                            : typeof booking.seats === 'string'
                             ? booking.seats.split(',')
                             : []
-                        ).map((seat) => (
-                          <span
-                            key={seat}
-                            className="bg-pink-700 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide"
-                          >
-                            {seat.trim()}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between items-center mb-3">
-                      <div>
-                        <p className="text-base sm:text-lg font-extrabold">
-                          ${booking.totalPrice.toFixed(2)}
-                        </p>
-                        <p className="text-[10px] sm:text-xs text-pink-300 mt-1">
-                          {seatCount} ticket{seatCount !== 1 ? 's' : ''}
-                        </p>
+                          ).map((seat) => (
+                            <span
+                              key={seat}
+                              className="bg-pink-700 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide"
+                            >
+                              {seat.trim()}
+                            </span>
+                          ))}
+                        </div>
                       </div>
 
-                      <span
-                        className={`inline-block px-3 py-1 rounded-full text-[8px] sm:text-[10px] font-bold tracking-wide
-                      ${booking.status.toLowerCase() === 'confirmed'
-                            ? 'bg-emerald-400 text-neutral-100'
-                            : booking.status.toLowerCase() === 'pending'
-                              ? 'bg-yellow-400 bg-opacity-30 text-yellow-400'
-                              : 'bg-red-500 bg-opacity-30 text-red-400'
-                          }`}
+                      <div className="flex justify-between items-center mb-3">
+                        <div>
+                          <p className="text-base sm:text-lg font-extrabold">
+                            ${booking.totalPrice.toFixed(2)}
+                          </p>
+                          <p className="text-[10px] sm:text-xs text-pink-300 mt-1">
+                            {seatCount} ticket{seatCount !== 1 ? 's' : ''}
+                          </p>
+                        </div>
+
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full text-[8px] sm:text-[10px] font-bold tracking-wide
+                            ${
+                              booking.status.toLowerCase() === 'confirmed'
+                                ? 'bg-emerald-400 text-neutral-100'
+                                : booking.status.toLowerCase() === 'pending'
+                                ? 'bg-yellow-400 bg-opacity-30 text-yellow-400'
+                                : 'bg-red-500 bg-opacity-30 text-red-400'
+                            }`}
+                        >
+                          {booking.status.toUpperCase()}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={exportToPDF}
+                        className="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-[10px] sm:text-xs font-bold px-3 py-2 rounded-full transition"
                       >
-                        {booking.status.toUpperCase()}
-                      </span>
+                        Download Ticket
+                      </button>
                     </div>
 
-                    <button
-                      onClick={exportToPDF}
-                      className="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-[10px] sm:text-xs font-bold px-3 py-2 rounded-full transition"
-                    >
-                      Download Ticket
-                    </button>
+                    <div className="absolute top-1/2 left-28 sm:left-36 right-0 border-t border-pink-400 border-dashed"></div>
                   </div>
-                  <div className="absolute top-1/2 left-28 sm:left-36 right-0 border-t border-pink-400 border-dashed"></div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </motion.div>
+          // --- Optimized Ticket Carousel Ends ---
         )}
       </div>
     </div>

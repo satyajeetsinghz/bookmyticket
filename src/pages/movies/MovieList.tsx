@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import type { Movie } from '../../types';
 import MovieCard from '../movies/MovieCard';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 export default function MovieList() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -30,79 +33,134 @@ export default function MovieList() {
     fetchMovies();
   }, []);
 
+  const checkScrollPosition = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeftArrow(scrollLeft > 0);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    const currentRef = scrollRef.current;
+    currentRef?.addEventListener('scroll', checkScrollPosition);
+    return () => currentRef?.removeEventListener('scroll', checkScrollPosition);
+  }, []);
+
+  const scroll = (offset: number) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: offset,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   if (loading) {
-    return <div className="text-center py-8">Loading movies...</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-pulse flex space-x-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="w-48 h-64 bg-neutral-800 rounded-lg"></div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="w-full bg-background-DEFAULT bg-apple-dark pt-16 sm:pt-20 pb-20 sm:pb-24 overflow-visible">
-      {/* Inner Content Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="w-full bg-neutral-950 py-12 sm:py-16">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 sm:mb-14 gap-4"
-        >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight font-sans leading-tight pb-1">
-            <span className="text-gradient">Now Showing</span>
-          </h1>
-
-          <Link
-            to="/movies"
-            className="text-primary-DEFAULT hover:text-primary-light text-sm sm:text-base font-medium flex items-center transition-colors"
+        <div className="flex justify-between items-end mb-8 sm:mb-12">
+          <motion.h2
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-white"
           >
-            View all
-            <ChevronRightIcon className="h-5 w-5 ml-1" />
-          </Link>
-        </motion.div>
+            Trending Now
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <Link
+              to="/movies"
+              className="flex items-center text-sm sm:text-base text-neutral-300 hover:text-white transition-colors"
+            >
+              View all
+              <ChevronRightIcon className="h-4 w-4 ml-1" />
+            </Link>
+          </motion.div>
+        </div>
 
-        {/* Movie Carousel */}
+        {/* Carousel Container */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="relative"
+          transition={{ delay: 0.2 }}
+          className="relative group"
         >
-          <div className="flex overflow-x-auto pb-6 -mx-4 px-4 scrollbar-hide space-x-4 sm:space-x-6">
+          {/* Scrollable Content */}
+          <div
+            ref={scrollRef}
+            className="flex overflow-x-auto pb-8 -mx-4 px-4 scrollbar-hide space-x-4 sm:space-x-6 scroll-smooth"
+            style={{
+              scrollSnapType: 'x mandatory',
+              scrollPadding: '0 16px'
+            }}
+          >
             {movies.map((movie) => (
               <motion.div
                 key={movie.id}
-                whileHover={{ scale: 1.04 }}
-                transition={{ type: "spring", stiffness: 160, damping: 18 }}
-                className="flex-none w-60 sm:w-72 transition-transform duration-500 hover:-translate-y-1"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="flex-none"
+                style={{
+                  width: 'calc(50vw - 32px)',
+                  minWidth: '160px',
+                  maxWidth: '280px',
+                  scrollSnapAlign: 'start'
+                }}
               >
-                <div className="card h-full rounded-xl overflow-hidden shadow-md bg-neutral-900">
-                  <MovieCard movie={movie} />
-                </div>
+                <MovieCard movie={movie} />
               </motion.div>
             ))}
           </div>
 
-          {/* Right Gradient Overlay */}
-          <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-l from-background-DEFAULT to-transparent pointer-events-none" />
-        </motion.div>
+          {/* Gradient Fades */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-neutral-950 to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-neutral-950 to-transparent pointer-events-none" />
 
-        {/* Carousel Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="flex justify-center mt-6 sm:mt-8"
-        >
-          <div className="flex space-x-2">
-            {movies.slice(0, 4).map((_, i) => (
-              <div
-                key={i}
-                className={`h-1.5 rounded-full ${i === 0 ? 'w-6 bg-primary-DEFAULT' : 'w-1.5 bg-border-DEFAULT'
-                  }`}
-              />
-            ))}
-          </div>
+          {/* Navigation Arrows */}
+          {showLeftArrow && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              whileHover={{ scale: 1.1 }}
+              onClick={() => scroll(-400)}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 flex items-center justify-center shadow-lg transition-all"
+            >
+              <ChevronLeftIcon className="h-6 w-6 text-white" />
+            </motion.button>
+          )}
+
+          {showRightArrow && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              whileHover={{ scale: 1.1 }}
+              onClick={() => scroll(400)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 flex items-center justify-center shadow-lg transition-all"
+            >
+              <ChevronRightIcon className="h-6 w-6 text-white" />
+            </motion.button>
+          )}
         </motion.div>
       </div>
-    </div>
-
+    </section>
   );
 }
