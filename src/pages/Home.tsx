@@ -37,17 +37,18 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-950 text-white">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-neutral-900 to-black text-white">
+
       <Hero />
 
       {/* Featured Movies with Apple-style horizontal scroll */}
-      <section className="py-20 px-6 bg-PRIMARY">
+      <section className="py-20 px-6 bg-gradient-to-b from-neutral-900 to-black">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-12">
             <h2 className="text-3xl md:text-4xl font-medium">Featured Movies</h2>
             <Link
               to="/movies"
-              className="text-blue-500 hover:text-blue-400 text-sm font-medium flex items-center transition-colors"
+              className="text-blue-100 hover:text-blue-200 text-sm font-medium flex items-center transition-colors"
             >
               View all
               <ChevronRightIcon className="h-5 w-5 ml-1" />
@@ -56,7 +57,7 @@ export default function Home() {
 
           {loading ? (
             <div className="flex justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500">o</div>
             </div>
           ) : (
             <motion.div
@@ -64,20 +65,20 @@ export default function Home() {
               animate={{ opacity: 1 }}
               className="relative"
             >
-              <div className="flex overflow-x-auto pb-8 -mx-6 px-6 scrollbar-hide">
-                <div className="flex space-x-8">
+              <div className="flex overflow-x-auto scrollbar-hide">
+                <div className="flex space-x-2">
                   {featuredMovies.map((movie) => (
                     <motion.div
                       key={movie.id}
                       whileHover={{ scale: 1.03 }}
-                      className="flex-none w-72"
+                      className="flex-none min-w-max"
                     >
                       <MovieCard movie={movie} />
                     </motion.div>
                   ))}
                 </div>
               </div>
-              <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-neutral-950 to-transparent pointer-events-none" />
+              {/* <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-neutral-950 to-transparent pointer-events-none" /> */}
             </motion.div>
           )}
         </div>
