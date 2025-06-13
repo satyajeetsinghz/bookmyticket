@@ -181,21 +181,19 @@ export default function MovieDetail() {
                 <nav className="flex space-x-4 sm:space-x-8">
                   <button
                     onClick={() => setActiveTab('details')}
-                    className={`py-2 sm:py-3 md:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm ${
-                      activeTab === 'details'
-                        ? 'border-blue-600 text-blue-600'
-                        : 'border-transparent text-neutral-400 hover:text-neutral-300'
-                    }`}
+                    className={`py-2 sm:py-3 md:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm ${activeTab === 'details'
+                      ? 'border-blue-600 text-blue-600'
+                      : 'border-transparent text-neutral-400 hover:text-neutral-300'
+                      }`}
                   >
                     Details
                   </button>
                   <button
                     onClick={() => setActiveTab('showtimes')}
-                    className={`py-2 sm:py-3 md:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm ${
-                      activeTab === 'showtimes'
-                        ? 'border-blue-600 text-blue-600'
-                        : 'border-transparent text-neutral-400 hover:text-neutral-300'
-                    }`}
+                    className={`py-2 sm:py-3 md:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm ${activeTab === 'showtimes'
+                      ? 'border-blue-600 text-blue-600'
+                      : 'border-transparent text-neutral-400 hover:text-neutral-300'
+                      }`}
                   >
                     Showtimes
                   </button>
@@ -258,7 +256,7 @@ export default function MovieDetail() {
           </div>
 
           {relatedMovies.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+            <div className="flex gap-2 px-2 py-2 overflow-x-auto scrollbar-hide scroll-smooth">
               {relatedMovies.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} />
               ))}
