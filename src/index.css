@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Apple-style dark theme colors */
+    --color-primary: 10 132 255; /* System Blue */
+    --color-secondary: 94 92 230; /* System Indigo */
+    --color-background: 0 0 0; /* True Black */
+    --color-surface: 28 28 30; /* System Gray 6 */
+    --color-text-primary: 255 255 255;
+    --color-text-secondary: 174 174 178; /* System Gray 2 */
+    --color-border: 44 44 46; /* System Gray 5 */
+  }
+
+  body {
+    @apply bg-black text-white;
+    background-image: 
+      radial-gradient(at 40% 20%, hsla(240, 100%, 5%, 0.5) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsla(0, 0%, 5%, 0.6) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsla(0, 0%, 10%, 0.6) 0px, transparent 50%);
+  }
+
+  /* Smooth scrolling */
+  html {
+    @apply scroll-smooth;
+  }
+
+  /* Apple-style focus rings */
+  * {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black;
+  }
+
+  /* Custom typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium tracking-tight;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl lg:text-7xl;
+  }
+
+  h2 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  /* Apple-style buttons */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3.5 text-base font-medium transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+
+  .btn-secondary {
+    @apply bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 border border-white/10;
+  }
+
+  /* Glassmorphism effect */
+  .glass {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-black;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/20 rounded-full hover:bg-white/30;
+  }
+}
+
+@layer components {
+  /* Apple-style cards */
+  .card {
+    @apply rounded-2xl bg-neutral-900/80 border border-neutral-800 overflow-hidden transition-all hover:border-neutral-700;
+  }
+
+  /* Apple-style inputs */
+  .input {
+    @apply w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/40 focus:border-white/20 focus:ring-0;
+  }
+
+  /* Apple-style section padding */
+  .section {
+    @apply py-20 lg:py-32;
+  }
+
+  /* Apple-style gradient text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80;
+  }
+}
+
+/* Reusable custom utility styles */
+.input {
+  @apply w-full px-4 py-3 bg-white/5 border border-white/10 rounded-apple-sm text-white placeholder:text-white/40 focus:border-primary focus:ring-0;
+}
+
+.btn-primary {
+  @apply relative overflow-hidden px-6 py-4 rounded-full bg-primary text-white text-lg font-medium tracking-tight transition-all duration-300;
+}
+
+.glass {
+  @apply bg-white/5 backdrop-blur-lg border border-white/10;
+}
