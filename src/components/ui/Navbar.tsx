@@ -30,8 +30,8 @@ export default function Navbar() {
             <div className="w-8 h-8 rounded-md bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
               <TicketIcon className="h-5 w-5 text-white" />
             </div>
-            <span className="text-xl font-semibold text-neutral-300 group-hover:text-blue-600 transition-colors">
-              MoviePass
+            <span className="text-xl font-semibold text-neutral-100 group-hover:text-blue-600 transition-colors">
+              BookMyTicket
             </span>
           </Link>
 
