@@ -105,13 +105,13 @@ export default function UserBookings() {
 
   return (
     <div className="w-full bg-background-DEFAULT bg-apple-dark pt-16 pb-24 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-yellow-200">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12"
+          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12 bg-fuchsia-300"
         >
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight font-sans leading-tight">
             <span className="text-gradient">My Tickets</span>
@@ -155,7 +155,7 @@ export default function UserBookings() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="overflow-x-auto no-scrollbar px-1 sm:px-4 py-6"
+            className="overflow-x-auto no-scrollbar p-8 bg-green-400"
           >
             <div
               className="flex gap-4 sm:gap-6 md:gap-8 snap-x snap-mandatory scroll-smooth"

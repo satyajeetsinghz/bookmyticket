@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { doc, getDoc, collection, query, where, limit, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import type { Movie } from '../../types';
-import { motion } from 'framer-motion';
 import { ChevronLeftIcon, ClockIcon, StarIcon, TicketIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import MovieCard from './MovieCard';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
@@ -11,17 +10,16 @@ import BookingForm from './BookingFrom';
 
 async function fetchRelatedMovies(movieId: string, genres: string[]): Promise<Movie[]> {
   try {
-    // Removed where('id', '!=', movieId) due to Firestore limitations
     const q = query(
       collection(db, 'movies'),
       where('genre', 'array-contains-any', genres.slice(0, 2)),
-      limit(5) // Fetch extra to filter out current movie after
+      limit(5)
     );
     const querySnapshot = await getDocs(q);
     const movies = querySnapshot.docs
       .map(doc => ({ id: doc.id, ...doc.data() } as Movie))
-      .filter(m => m.id !== movieId) // Manually exclude current movie
-      .slice(0, 4); // Limit to 4 after filtering
+      .filter(m => m.id !== movieId)
+      .slice(0, 4);
     return movies;
   } catch (error) {
     console.error('Error fetching related movies:', error);
@@ -39,15 +37,12 @@ export default function MovieDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch main movie
         const docRef = doc(db, 'movies', id!);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           const movieData = { id: docSnap.id, ...docSnap.data() } as Movie;
           setMovie(movieData);
-
-          // Fetch related movies only if we have a movie
           const related = await fetchRelatedMovies(movieData.id, movieData.genre);
           setRelatedMovies(related);
         }
@@ -87,13 +82,8 @@ export default function MovieDetail() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="bg-background-DEFAULT bg-apple-dark text-white min-h-screen"
-    >
-      {/* Hero Section with Backdrop */}
+    <div className="bg-background-DEFAULT bg-apple-dark text-white min-h-screen">
+      {/* Hero Section */}
       <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/70 to-transparent z-10" />
         <img
@@ -113,16 +103,12 @@ export default function MovieDetail() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-16 sm:-mt-20 relative z-10">
         <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
+          {/* Left */}
           <div className="w-full lg:w-1/3">
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="relative aspect-[2/3] sm:aspect-[3/4] rounded-xl overflow-hidden shadow-2xl border-2 border-neutral-700 mx-auto max-w-xs sm:max-w-none"
-            >
+            <div className="relative aspect-[2/3] sm:aspect-[3/4] rounded-xl overflow-hidden shadow-2xl border-2 border-neutral-700 mx-auto max-w-xs sm:max-w-none">
               <img
                 src={movie.posterUrl}
                 alt={movie.title}
@@ -135,7 +121,7 @@ export default function MovieDetail() {
                 <StarIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-0.5 sm:mr-1" />
                 {movie.rating}
               </div>
-            </motion.div>
+            </div>
 
             <div className="mt-4 sm:mt-6 bg-neutral-800 rounded-xl p-4 sm:p-6 md:p-8">
               <div className="space-y-2 sm:space-y-3 md:space-y-4 text-sm sm:text-base">
@@ -169,14 +155,10 @@ export default function MovieDetail() {
             </div>
           </div>
 
+          {/* Right */}
           <div className="w-full lg:w-2/3">
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
+            <div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">{movie.title}</h1>
-
               <div className="border-b border-neutral-700 mb-4 sm:mb-6">
                 <nav className="flex space-x-4 sm:space-x-8">
                   <button
@@ -226,27 +208,17 @@ export default function MovieDetail() {
                 )}
               </div>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="bg-neutral-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-lg"
-              >
+              <div className="bg-neutral-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-lg">
                 <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-5 md:mb-6">Book Tickets</h2>
                 <BookingForm movieId={movie.id} ticketPrice={movie.ticketPrice} />
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="my-8 sm:my-12 md:my-16"
-        >
+        <section className="my-20 sm:my-28 md:my-32">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 mb-4 sm:mb-6 md:mb-8">
-            <h2 className="text-xl sm:text-2xl font-bold">You Might Also Like</h2>
+            <h2 className="text-2xl sm:text-4xl font-bold">You Might Also Like</h2>
             <Link
               to="/movies"
               className="text-blue-600 text-xs sm:text-sm font-semibold hover:text-blue-500 flex items-center"
@@ -266,8 +238,8 @@ export default function MovieDetail() {
               No similar movies found
             </div>
           )}
-        </motion.section>
+        </section>
       </div>
-    </motion.div>
+    </div>
   );
 }

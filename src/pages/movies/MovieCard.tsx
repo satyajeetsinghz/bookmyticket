@@ -1,6 +1,5 @@
 import type { Movie } from '../../types';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { StarIcon } from '@heroicons/react/24/solid';
 
 interface MovieCardProps {
@@ -9,19 +8,9 @@ interface MovieCardProps {
 
 export default function MovieCard({ movie }: MovieCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -50px 0px" }}
-      transition={{ duration: 0.6 }}
-      className="group flex aspect-[2/3] w-[180px] sm:w-[220px] md:w-[260px] lg:w-[280px] flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 shadow transition hover:shadow-lg"
-    >
+    <div className="group flex aspect-[2/3] w-[180px] sm:w-[220px] md:w-[260px] lg:w-[280px] flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 shadow transition hover:shadow-lg">
       {/* Poster Section */}
-      <motion.div
-        whileHover={{ scale: 1.03 }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="relative h-[60%] w-full overflow-hidden md:h-[66%]"
-      >
+      <div className="relative h-[60%] w-full overflow-hidden md:h-[66%]">
         <img
           src={movie.posterUrl}
           alt={movie.title}
@@ -36,7 +25,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
           <StarIcon className="h-3.5 w-3.5 text-yellow-400" />
           <span>{movie.rating}</span>
         </div>
-      </motion.div>
+      </div>
 
       {/* Content Section */}
       <div className="flex w-full flex-col justify-between p-3 sm:h-[40%] md:h-[34%]">
@@ -73,6 +62,6 @@ export default function MovieCard({ movie }: MovieCardProps) {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
