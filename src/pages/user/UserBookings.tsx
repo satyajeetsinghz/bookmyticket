@@ -65,8 +65,8 @@ export default function UserBookings() {
       const seats = Array.isArray(b.seats)
         ? b.seats.join(', ')
         : typeof b.seats === 'string'
-        ? b.seats
-        : ''
+          ? b.seats
+          : ''
 
       return [
         b.movie.title,
@@ -105,13 +105,13 @@ export default function UserBookings() {
 
   return (
     <div className="w-full bg-background-DEFAULT bg-apple-dark pt-16 pb-24 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-yellow-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12 bg-fuchsia-300"
+          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-12"
         >
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight font-sans leading-tight">
             <span className="text-gradient">My Tickets</span>
@@ -155,10 +155,10 @@ export default function UserBookings() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="overflow-x-auto no-scrollbar p-8 bg-green-400"
+            className="overflow-x-auto no-scrollbar p-8"
           >
             <div
-              className="flex gap-4 sm:gap-6 md:gap-8 snap-x snap-mandatory scroll-smooth"
+              className="flex gap-16 sm:gap-12 md:gap-20 snap-x snap-mandatory scroll-smooth"
               style={{ paddingBottom: '8px', minWidth: 'max-content' }}
             >
               {bookings.map((booking) => {
@@ -173,17 +173,17 @@ export default function UserBookings() {
                   typeof booking.seats === 'string'
                     ? booking.seats.split(',').length
                     : Array.isArray(booking.seats)
-                    ? booking.seats.length
-                    : 0
+                      ? booking.seats.length
+                      : 0
 
                 return (
                   <div
                     key={booking.id}
-                    className="snap-start flex-shrink-0 w-[90vw] sm:w-[340px] md:w-[380px] lg:w-[400px] bg-gradient-to-br from-yellow-600 via-orange-500 to-pink-700 rounded-3xl shadow-xl relative text-white font-sans"
+                    className="snap-start flex-shrink-0 w-[90vw] sm:w-[340px] md:w-[380px] lg:w-[400px] bg-gradient-to-br from-neutral-950 via-neutral-800 to-neutral-950 rounded-3xl shadow-xl relative text-white font-sans"
                     style={{ minHeight: '280px' }}
                   >
                     {/* Left Poster */}
-                    <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-36 rounded-l-3xl overflow-hidden shadow-lg border-r border-yellow-800">
+                    <div className="absolute left-0 top-0 bottom-0 w-28 sm:w-36 rounded-l-3xl overflow-hidden shadow-lg border-r border-emerald-800">
                       <img
                         src={booking.movie.posterUrl}
                         alt={booking.movie.title}
@@ -194,12 +194,12 @@ export default function UserBookings() {
                     {/* Ticket Perforation Circles */}
                     <div
                       aria-hidden="true"
-                      className="absolute top-1/2 -left-5 w-10 h-10 bg-gray-900 rounded-full border-4 border-pink-600 shadow-md"
+                      className="absolute top-1/2 -left-5 w-10 h-10 bg-gray-900 rounded-full border-4 border-emerald-400 shadow-md"
                       style={{ transform: 'translateY(-50%)' }}
                     ></div>
                     <div
                       aria-hidden="true"
-                      className="absolute top-1/2 -right-5 w-10 h-10 bg-gray-900 rounded-full border-4 border-pink-600 shadow-md"
+                      className="absolute top-1/2 -right-5 w-10 h-10 bg-gray-900 rounded-full border-4 border-emerald-400 shadow-md"
                       style={{ transform: 'translateY(-50%)' }}
                     ></div>
 
@@ -209,7 +209,7 @@ export default function UserBookings() {
                         {booking.movie.title}
                       </h3>
 
-                      <div className="text-xs sm:text-sm text-pink-200 mb-3">
+                      <div className="text-xs sm:text-sm text-neutral-100 mb-3">
                         <div>{formattedDate}</div>
                         <div>{formattedTime}</div>
                       </div>
@@ -222,12 +222,12 @@ export default function UserBookings() {
                           {(Array.isArray(booking.seats)
                             ? booking.seats
                             : typeof booking.seats === 'string'
-                            ? booking.seats.split(',')
-                            : []
+                              ? booking.seats.split(',')
+                              : []
                           ).map((seat) => (
                             <span
                               key={seat}
-                              className="bg-pink-700 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide"
+                              className="bg-emerald-500 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold tracking-wide"
                             >
                               {seat.trim()}
                             </span>
@@ -240,17 +240,16 @@ export default function UserBookings() {
                           <p className="text-base sm:text-lg font-extrabold">
                             ${booking.totalPrice.toFixed(2)}
                           </p>
-                          <p className="text-[10px] sm:text-xs text-pink-300 mt-1">
+                          <p className="text-[10px] sm:text-xs text-neutral-100 mt-1">
                             {seatCount} ticket{seatCount !== 1 ? 's' : ''}
                           </p>
                         </div>
 
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-[8px] sm:text-[10px] font-bold tracking-wide
-                            ${
-                              booking.status.toLowerCase() === 'confirmed'
-                                ? 'bg-emerald-400 text-neutral-100'
-                                : booking.status.toLowerCase() === 'pending'
+                            ${booking.status.toLowerCase() === 'confirmed'
+                              ? 'bg-emerald-400 text-neutral-100'
+                              : booking.status.toLowerCase() === 'pending'
                                 ? 'bg-yellow-400 bg-opacity-30 text-yellow-400'
                                 : 'bg-red-500 bg-opacity-30 text-red-400'
                             }`}
@@ -267,7 +266,7 @@ export default function UserBookings() {
                       </button>
                     </div>
 
-                    <div className="absolute top-1/2 left-28 sm:left-36 right-0 border-t border-pink-400 border-dashed"></div>
+                    <div className="absolute top-1/2 left-28 sm:left-36 right-0 border-t border-emerald-400 border-dashed"></div>
                   </div>
                 )
               })}
