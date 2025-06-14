@@ -35,7 +35,7 @@ export default function Footer() {
           </div>
 
           {/* Navigation Links */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h4 className="text-sm font-semibold text-white uppercase tracking-wider">Explore</h4>
             <nav className="space-y-3">
               <Link to="/movies" className="block text-sm text-neutral-400 hover:text-white transition-colors">
@@ -51,10 +51,10 @@ export default function Footer() {
                 Membership
               </Link>
             </nav>
-          </div>
+          </div> */}
 
           {/* Legal Links */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h4 className="text-sm font-semibold text-white uppercase tracking-wider">Legal</h4>
             <nav className="space-y-3">
               <a href="#" className="block text-sm text-neutral-400 hover:text-white transition-colors">
@@ -70,10 +70,10 @@ export default function Footer() {
                 Legal Notices
               </a>
             </nav>
-          </div>
+          </div> */}
 
           {/* Contact */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h4 className="text-sm font-semibold text-white uppercase tracking-wider">Contact</h4>
             <address className="not-italic space-y-3">
               <p className="text-sm text-neutral-400">123 Cinema Street</p>
@@ -85,7 +85,7 @@ export default function Footer() {
                 +1 (123) 456-7890
               </a>
             </address>
-          </div>
+          </div> */}
         </div>
 
         {/* Copyright */}
@@ -94,7 +94,7 @@ export default function Footer() {
             <p className="text-xs text-neutral-500">
               &copy; {new Date().getFullYear()} BookMyTicket, Inc. All rights reserved.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
+            {/* <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-xs text-neutral-500 hover:text-white transition-colors">
                 Privacy Policy
               </a>
@@ -110,7 +110,7 @@ export default function Footer() {
               <a href="#" className="text-xs text-neutral-500 hover:text-white transition-colors">
                 Site Map
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
